@@ -80,7 +80,7 @@ fn pretend_fields_used_struct(cont: &Container, fields: &[Field]) -> TokenStream
     let (_, ty_generics, _) = cont.generics.split_for_impl();
 
     let members = fields.iter().map(|field| &field.member);
-    let placeholders = (0usize..).map(|i| format_ident!("__v{}", i));
+    let placeholders = (0usize..).map(|i| format_ident!("__v{i}"));
 
     quote! {
         match _serde::__private::None::<&#type_ident #ty_generics> {
@@ -118,7 +118,7 @@ fn pretend_fields_used_enum(cont: &Container, variants: &[Variant]) -> TokenStre
             Style::Struct | Style::Tuple | Style::Newtype => {
                 let variant_ident = &variant.ident;
                 let members = variant.fields.iter().map(|field| &field.member);
-                let placeholders = (0usize..).map(|i| format_ident!("__v{}", i));
+                let placeholders = (0usize..).map(|i| format_ident!("__v{i}"));
                 Some(quote!(#type_ident::#variant_ident { #(#members: #placeholders),* }))
             }
             Style::Unit => None,
@@ -159,7 +159,7 @@ fn pretend_variants_used(cont: &Container) -> TokenStream {
     let cases = variants.iter().map(|variant| {
         let variant_ident = &variant.ident;
         let placeholders = &(0..variant.fields.len())
-            .map(|i| format_ident!("__v{}", i))
+            .map(|i| format_ident!("__v{i}"))
             .collect::<Vec<_>>();
 
         let pat = match variant.style {

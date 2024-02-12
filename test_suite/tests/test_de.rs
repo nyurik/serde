@@ -2329,7 +2329,7 @@ fn test_atomics() {
                 let loaded = load(&v, Ordering::Relaxed);
                 assert_eq!(val, loaded);
             }
-            Err(e) => panic!("tokens failed to deserialize: {}", e),
+            Err(e) => panic!("tokens failed to deserialize: {e}"),
         }
     }
 

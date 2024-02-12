@@ -684,9 +684,9 @@ fn deserialize_seq(
         .filter(|field| !field.attrs.skip_deserializing())
         .count();
     let expecting = if deserialized_count == 1 {
-        format!("{} with 1 element", expecting)
+        format!("{expecting} with 1 element")
     } else {
-        format!("{} with {} elements", expecting, deserialized_count)
+        format!("{expecting} with {deserialized_count} elements")
     };
     let expecting = cattrs.expecting().unwrap_or(&expecting);
 
@@ -780,9 +780,9 @@ fn deserialize_seq_in_place(
         .filter(|field| !field.attrs.skip_deserializing())
         .count();
     let expecting = if deserialized_count == 1 {
-        format!("{} with 1 element", expecting)
+        format!("{expecting} with 1 element")
     } else {
-        format!("{} with {} elements", expecting, deserialized_count)
+        format!("{expecting} with {deserialized_count} elements")
     };
     let expecting = cattrs.expecting().unwrap_or(&expecting);
 
@@ -1432,7 +1432,7 @@ fn deserialize_adjacently_tagged_enum(
         .collect();
 
     let rust_name = params.type_name();
-    let expecting = format!("adjacently tagged enum {}", rust_name);
+    let expecting = format!("adjacently tagged enum {rust_name}");
     let expecting = cattrs.expecting().unwrap_or(&expecting);
     let type_name = cattrs.name().deserialize_name();
     let deny_unknown_fields = cattrs.deny_unknown_fields();
@@ -2358,7 +2358,7 @@ fn deserialize_identifier(
             fallthrough
         } else {
             let index_expecting = if is_variant { "variant" } else { "field" };
-            let fallthrough_msg = format!("{} index 0 <= i < {}", index_expecting, fields.len());
+            let fallthrough_msg = format!("{index_expecting} index 0 <= i < {}", fields.len());
             u64_fallthrough_arm_tokens = quote! {
                 _serde::__private::Err(_serde::de::Error::invalid_value(
                     _serde::de::Unexpected::Unsigned(__value),
@@ -2825,7 +2825,7 @@ fn deserialize_map_in_place(
 }
 
 fn field_i(i: usize) -> Ident {
-    Ident::new(&format!("__field{}", i), Span::call_site())
+    Ident::new(&format!("__field{i}"), Span::call_site())
 }
 
 /// This function wraps the expression in `#[serde(deserialize_with = "...")]`

@@ -463,7 +463,7 @@ fn serialize_variant(
             }
             Style::Tuple => {
                 let field_names = (0..variant.fields.len())
-                    .map(|i| Ident::new(&format!("__field{}", i), Span::call_site()));
+                    .map(|i| Ident::new(&format!("__field{i}"), Span::call_site()));
                 quote! {
                     #this_value::#variant_ident(#(ref #field_names),*)
                 }
@@ -720,7 +720,7 @@ fn serialize_adjacently_tagged_variant(
         }
         Style::Newtype => vec![Member::Named(Ident::new("__field0", Span::call_site()))],
         Style::Tuple => (0..variant.fields.len())
-            .map(|i| Member::Named(Ident::new(&format!("__field{}", i), Span::call_site())))
+            .map(|i| Member::Named(Ident::new(&format!("__field{i}"), Span::call_site())))
             .collect(),
         Style::Struct => variant.fields.iter().map(|f| f.member.clone()).collect(),
     };
@@ -838,7 +838,7 @@ fn serialize_tuple_variant(
         .map(|(i, field)| match field.attrs.skip_serializing_if() {
             None => quote!(1),
             Some(path) => {
-                let field_expr = Ident::new(&format!("__field{}", i), Span::call_site());
+                let field_expr = Ident::new(&format!("__field{i}"), Span::call_site());
                 quote!(if #path(#field_expr) { 0 } else { 1 })
             }
         })
@@ -1068,7 +1068,7 @@ fn serialize_tuple_struct_visitor(
         .filter(|(_, field)| !field.attrs.skip_serializing())
         .map(|(i, field)| {
             let mut field_expr = if is_enum {
-                let id = Ident::new(&format!("__field{}", i), Span::call_site());
+                let id = Ident::new(&format!("__field{i}"), Span::call_site());
                 quote!(#id)
             } else {
                 get_member(

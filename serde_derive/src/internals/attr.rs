@@ -543,7 +543,7 @@ impl Container {
                 } else {
                     let path = meta.path.to_token_stream().to_string().replace(' ', "");
                     return Err(
-                        meta.error(format_args!("unknown serde container attribute `{}`", path))
+                        meta.error(format_args!("unknown serde container attribute `{path}`"))
                     );
                 }
                 Ok(())
@@ -946,7 +946,7 @@ impl Variant {
                 } else {
                     let path = meta.path.to_token_stream().to_string().replace(' ', "");
                     return Err(
-                        meta.error(format_args!("unknown serde variant attribute `{}`", path))
+                        meta.error(format_args!("unknown serde variant attribute `{path}`"))
                     );
                 }
                 Ok(())
@@ -1101,7 +1101,7 @@ impl Field {
                     for lifetime in lifetimes {
                         if !borrowable.contains(lifetime) {
                             let msg =
-                                format!("field `{}` does not have lifetime {}", ident, lifetime);
+                                format!("field `{ident}` does not have lifetime {lifetime}");
                             cx.error_spanned_by(field, msg);
                         }
                     }
@@ -1228,7 +1228,7 @@ impl Field {
                 } else {
                     let path = meta.path.to_token_stream().to_string().replace(' ', "");
                     return Err(
-                        meta.error(format_args!("unknown serde field attribute `{}`", path))
+                        meta.error(format_args!("unknown serde field attribute `{path}`"))
                     );
                 }
                 Ok(())
@@ -1488,7 +1488,7 @@ fn get_lit_str2(
         if !suffix.is_empty() {
             cx.error_spanned_by(
                 lit,
-                format!("unexpected suffix `{}` on string literal", suffix),
+                format!("unexpected suffix `{suffix}` on string literal"),
             );
         }
         Ok(Some(lit.clone()))
@@ -1585,7 +1585,7 @@ fn parse_lit_into_ty(
         Err(_) => {
             cx.error_spanned_by(
                 &string,
-                format!("failed to parse type: {} = {:?}", attr_name, string.value()),
+                format!("failed to parse type: {attr_name} = {:?}", string.value()),
             );
             None
         }
@@ -1610,7 +1610,7 @@ fn parse_lit_into_lifetimes(
             if !set.insert(lifetime.clone()) {
                 cx.error_spanned_by(
                     &string,
-                    format!("duplicate borrowed lifetime `{}`", lifetime),
+                    format!("duplicate borrowed lifetime `{lifetime}`"),
                 );
             }
             if input.is_empty() {
@@ -1784,7 +1784,7 @@ fn borrowable_lifetimes(
     let mut lifetimes = BTreeSet::new();
     collect_lifetimes(&field.ty, &mut lifetimes);
     if lifetimes.is_empty() {
-        let msg = format!("field `{}` has no lifetimes to borrow", name);
+        let msg = format!("field `{name}` has no lifetimes to borrow");
         cx.error_spanned_by(field, msg);
         Err(())
     } else {

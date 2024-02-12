@@ -208,7 +208,7 @@ macro_rules! declare_error_trait {
             /// expected type is the string.
             #[cold]
             fn invalid_type(unexp: Unexpected, exp: &Expected) -> Self {
-                Error::custom(format_args!("invalid type: {}, expected {}", unexp, exp))
+                Error::custom(format_args!("invalid type: {unexp}, expected {exp}"))
             }
 
             /// Raised when a `Deserialize` receives a value of the right type but that
@@ -226,7 +226,7 @@ macro_rules! declare_error_trait {
             /// expected value is a string.
             #[cold]
             fn invalid_value(unexp: Unexpected, exp: &Expected) -> Self {
-                Error::custom(format_args!("invalid value: {}, expected {}", unexp, exp))
+                Error::custom(format_args!("invalid value: {unexp}, expected {exp}"))
             }
 
             /// Raised when deserializing a sequence or map and the input data contains
@@ -240,7 +240,7 @@ macro_rules! declare_error_trait {
             /// expected.
             #[cold]
             fn invalid_length(len: usize, exp: &Expected) -> Self {
-                Error::custom(format_args!("invalid length {}, expected {}", len, exp))
+                Error::custom(format_args!("invalid length {len}, expected {exp}"))
             }
 
             /// Raised when a `Deserialize` enum type received a variant with an
@@ -284,14 +284,14 @@ macro_rules! declare_error_trait {
             /// input.
             #[cold]
             fn missing_field(field: &'static str) -> Self {
-                Error::custom(format_args!("missing field `{}`", field))
+                Error::custom(format_args!("missing field `{field}`"))
             }
 
             /// Raised when a `Deserialize` struct type received more than one of the
             /// same field.
             #[cold]
             fn duplicate_field(field: &'static str) -> Self {
-                Error::custom(format_args!("duplicate field `{}`", field))
+                Error::custom(format_args!("duplicate field `{field}`"))
             }
         }
     }
@@ -1368,7 +1368,7 @@ pub trait Visitor<'de>: Sized {
     {
         let mut buf = [0u8; 58];
         let mut writer = format::Buf::new(&mut buf);
-        fmt::Write::write_fmt(&mut writer, format_args!("integer `{}` as i128", v)).unwrap();
+        fmt::Write::write_fmt(&mut writer, format_args!("integer `{v}` as i128")).unwrap();
         Err(Error::invalid_type(
             Unexpected::Other(writer.as_str()),
             &self,
@@ -1430,7 +1430,7 @@ pub trait Visitor<'de>: Sized {
     {
         let mut buf = [0u8; 57];
         let mut writer = format::Buf::new(&mut buf);
-        fmt::Write::write_fmt(&mut writer, format_args!("integer `{}` as u128", v)).unwrap();
+        fmt::Write::write_fmt(&mut writer, format_args!("integer `{v}` as u128")).unwrap();
         Err(Error::invalid_type(
             Unexpected::Other(writer.as_str()),
             &self,
