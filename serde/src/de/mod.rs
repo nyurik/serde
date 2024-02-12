@@ -399,12 +399,12 @@ impl<'a> fmt::Display for Unexpected<'a> {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         use self::Unexpected::*;
         match *self {
-            Bool(b) => write!(formatter, "boolean `{}`", b),
-            Unsigned(i) => write!(formatter, "integer `{}`", i),
-            Signed(i) => write!(formatter, "integer `{}`", i),
+            Bool(b) => write!(formatter, "boolean `{b}`"),
+            Unsigned(i) => write!(formatter, "integer `{i}`"),
+            Signed(i) => write!(formatter, "integer `{i}`"),
             Float(f) => write!(formatter, "floating point `{}`", WithDecimalPoint(f)),
-            Char(c) => write!(formatter, "character `{}`", c),
-            Str(s) => write!(formatter, "string {:?}", s),
+            Char(c) => write!(formatter, "character `{c}`"),
+            Str(s) => write!(formatter, "string {s:?}"),
             Bytes(_) => formatter.write_str("byte array"),
             Unit => formatter.write_str("unit value"),
             Option => formatter.write_str("Option value"),
@@ -2283,7 +2283,7 @@ impl Display for OneOf {
                     if i > 0 {
                         tri!(formatter.write_str(", "));
                     }
-                    tri!(write!(formatter, "`{}`", alt));
+                    tri!(write!(formatter, "`{alt}`"));
                 }
                 Ok(())
             }
